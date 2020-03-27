@@ -32,6 +32,12 @@ else
 	PLAYER2="O"
 fi
 
-
-
+#Begin With toss
+toss=$((RANDOM%2))
+if [[ $toss -eq 1 ]]
+then
+	printf "PLAYER1 will play first"
+else
+	printf "PLAYER2 will play first"
+fi
 
