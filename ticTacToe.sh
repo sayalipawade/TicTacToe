@@ -36,8 +36,9 @@ fi
 toss=$((RANDOM%2))
 if [[ $toss -eq 1 ]]
 then
-	printf "PLAYER1 will play first"
+	printf "PLAYER1 will play first\n"
 else
-	printf "PLAYER2 will play first"
+	printf "PLAYER2 will play first\n"
 fi
 
+freshBoard
