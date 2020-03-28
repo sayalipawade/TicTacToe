@@ -59,12 +59,12 @@ function addPosition()
 {
 	if [ $(($toss%2)) -eq 0 ]
 	then
-		board[$1,$2]="O"
+			board[$1,$2]="O"
 	else
-		board[$1,$2]="X"
+			board[$1,$2]="X"
 	fi
-	winOrTie
-	((toss++))
+			winOrTie
+			((toss++))
 }
 
 #Win or Tie
