@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 echo "Welcome"
 
 #constants
@@ -57,14 +57,19 @@ function printBoard()
 #Add Position
 function addPosition()
 {
-	if [ $(($toss%2)) -eq 0 ]
+	if [[ ${board[$1,$2]} == "O" || ${board[$1,$2]} == "X" ]]
 	then
-			board[$1,$2]="O"
+		printf "This position is already entered\n"
 	else
+		if [ $(($toss%2)) -eq 0 ]
+		then
+			board[$1,$2]="O"
+		else
 			board[$1,$2]="X"
+		fi
+		winOrTie
+		((toss++))
 	fi
-			winOrTie
-			((toss++))
 }
 
 #Win or Tie
@@ -87,6 +92,7 @@ function winOrTie()
 		printBoard
 		printf "Match is tie\n"
 		end=0
+		exit
 	fi
 }
 
@@ -108,41 +114,45 @@ function whoIsWin()
 #logic of computer
 function playComputer()
 {
-	if [[ ${board[1,0]} == ${board[2,0]} || ${board[1,1]} == ${board[2,2]} || ${board[0,1]} == ${board[0,2]} ]]
-	then
+	if [[ ${board[0,0]} == 1 || ${board[1,0]} == ${board[2,0]} && ${board[0,0]} != X && ${board[0,0]} != O || ${board[0,1]} == ${board[2,2]} && ${board[0,0]} != "X" && ${board[0,0]} != "O" || ${board[0,1]} == ${board[0,2]} && ${board[0,0]} != "X" && ${board[0,0]} != "O" ]]
+	then 
 		addPosition 0 0
-	elif [[ ${board[0,0]} == ${board[0,2]} || ${board[1,1]} == ${board[2,1]} ]]
+	elif [[ ${board[0,0]} == ${board[0,2]} && ${board[0,1]} != "X" && ${board[0,1]} != "O" || ${board[1,1]} == ${board[2,1]} && ${board[0,1]} != "X" && ${board[0,1]} != "O" ]]
 	then
 		addPosition 0 1
-	elif [[ ${board[0,0]} == ${board[0,1]} || ${board[1,2]} == ${board[2,2]} || ${board[2,0]} == ${board[2,1]} ]]
+	elif [[ ${board[0,0]} == ${board[0,1]} && ${board[0,2]} != "X" && ${board[0,2]} != "O" || ${board[1,2]} == ${board[2,2]} && ${board[0,2]} != "X" && ${board[0,2]} != "O" || ${board[2,0]} == ${board[1,1]} && ${board[0,2]} != "X" && ${board[0,2]} != "O" ]]
 	then
 		addPosition 0 2
-	elif [[ ${board[0,0]} == ${board[2,0]} || ${board[1,1]} == ${board[1,2]} ]]
+	elif [[ ${board[0,0]} == ${board[2,0]} && ${board[1,0]} != "X" && ${board[1,0]} != "O" || ${board[1,1]} == ${board[1,2]} && ${board[1,0]} != "X" && ${board[1,0]} != "O" ]]
 	then 
 		addPosition 1 0
-	elif [[ ${board[1,0]} == ${board[1,2]} || ${board[0,1]} == ${board[2,1]} || ${board[0,0]} == ${board[2,2]} || ${board[0,2]} == ${board[2,0]} ]]
+	elif [[ ${board[1,0]} == ${board[1,2]} && ${board[1,1]} != "X" && ${board[1,1]} != "O" || ${board[0,1]} == ${board[2,1]} && ${board[1,1]} != "X" && ${board[1,1]} != "O" || ${board[0,0]} == ${board[2,2]} && ${board[1,1]} != "X" && ${board[1,1]} != "O" || ${board[0,2]} == ${board[2,0]} && ${board[1,1]} != "X" && ${board[1,1]} != "O" ]]
 	then
 		addPosition 1 1
-	elif [[ ${board[0,2]} == ${board[2,2]} || ${board[1,0]} == ${board[1,1]} ]]
+	elif [[ ${board[0,2]} == ${board[2,2]} && ${board[1,2]} != "X" && ${board[1,2]} != "O" || ${board[1,0]} == ${board[1,1]} && ${board[1,2]} != "X" && ${board[1,2]} != "O" ]]
 	then
 		addPosition 1 2
-	elif [[ ${board[0,0]} == ${board[1,0]} || ${board[2,1]} == ${board[2,2]} || ${board[0,2]} == ${board[1,1]} ]]
+	elif [[ ${board[0,0]} == ${board[1,0]} && ${board[2,0]} != "X" && ${board[2,0]} != "O" || ${board[2,1]} == ${board[2,2]} && ${board[2,0]} == "X" && ${board[2,0]} != "O" || ${board[0,2]} == ${board[1,1]} && ${board[2,0]} != "X" && ${board[2,0]} != "O" ]]
 	then
 		addPosition 2 0
-	elif [[ ${board[0,1]} == ${board[1,1]} || ${board[2,0]} == ${board[2,2]} ]]
+	elif [[ ${board[0,1]} == ${board[1,1]} && ${board[2,1]} != "X" && ${board[2,1]} != "O" || ${board[2,0]} == ${board[2,2]} && ${board[2,1]} != "X" && ${board[2,1]} != "O" ]]
 	then
 		addPosition 2 1
-	elif [[ ${board[2,0]} == ${board[2,1]} || ${board[0,2]} == ${board[1,2]} || ${board[0,0]} == ${board[1,1]} ]]
+	elif [[ ${board[2,0]} == ${board[2,1]} && ${board[2,1]} != "X" && ${board[2,1]} != "O" || ${board[0,2]} == ${board[1,2]} && ${board[2,2]} != "X" && ${board[2,2]} != "O" || ${board[0,0]} == ${board[1,1]} && ${board[2,2]} != "X" && ${board[2,2]} != "O" ]]
 	then
 		addPosition 2 2
+	elif [[ ${board[0,2]} == 3 ]]
+	then
+		addPosition 0 2
+	elif [[ ${board[2,0]} == 7 ]]
+	then
+		addPosition 2 0
+	elif [[ ${board[1,1]} == 5 ]]
+	then 
+		addPosition 1 1
 	else
 		randomPos1=$((RANDOM%3))
 		randomPos2=$((RANDOM%3))
-		while [[ ${board[$randomPos1,$randomPos2]} == 'O' || ${board[$randomPos1,$randomPos2]} == 'X' ]]
-		do
-			randomPos1=$((RANDOM%3))
-			randomPos2=$((RANDOM%3))
-		done
 		addPosition $randomPos1 $randomPos2
 	fi
 }
@@ -160,7 +170,7 @@ do
 				printf "\n"
 				printBoard
 			else
-				read -p "$PLAYER2 enter a position" choice
+				read -p "$PLAYER2 enter a position:" choice
 			fi
 	fi
 	if [ $(($toss%2)) -eq 1 ]
@@ -200,5 +210,5 @@ do
 				;;
 	esac
 done 
-	
+
 	
